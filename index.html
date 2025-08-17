@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manpower Recruitment</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header>
+    <h1>Manpower Recruitment Agency</h1>
+    <nav>
+      <a href="#jobs">Jobs</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section id="jobs">
+      <h2>Job Openings</h2>
+      <div class="job-list" id="jobList"></div>
+    </section>
+    <!-- Application Modal -->
+    <div class="modal" id="applyModal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3>Apply for Job</h3>
+        <form id="applyForm">
+          <input type="hidden" id="jobTitle" name="jobTitle"/>
+          <label>Name: <input type="text" id="name" required /></label>
+          <label>Email: <input type="email" id="email" required /></label>
+          <label>Phone: <input type="tel" id="phone" required /></label>
+          <button type="submit">Submit Application</button>
+        </form>
+        <div id="confirmation" class="confirmation"></div>
+      </div>
+    </div>
+  </main>
+  <footer id="contact">
+    <p>Contact us: info@manpoweragency.com | +91-1234567890</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

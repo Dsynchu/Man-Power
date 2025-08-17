@@ -1,0 +1,96 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+}
+
+header {
+  background: #00539C;
+  color: white;
+  padding: 1em 0.5em;
+}
+
+header nav a {
+  color: #fff;
+  margin: 0 1em;
+  text-decoration: none;
+}
+
+main { padding: 2em; }
+
+#jobs {
+  margin: 2em 0;
+}
+
+.job-list { 
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 2em; 
+}
+
+.job-card {
+  background: #fff;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  flex: 1 0 250px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+}
+
+.job-card h3 { margin-top: 0; }
+
+button {
+  background: #00539C;
+  color: white;
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+button:hover { background: #003970; }
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 8% auto;
+  padding: 2em;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin: 1em 0 0.5em 0;
+}
+
+input { width: 100%; padding: 0.5em; }
+
+.confirmation { margin-top: 1em; color: green; }
+
+footer {
+  text-align: center;
+  background: #333;
+  color: #fff;
+  padding: 1em;
+  margin-top: 2em;
+}
