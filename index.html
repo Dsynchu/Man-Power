@@ -1,134 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Manpower Recruitment Agency</title>
-  <link rel="stylesheet" href="styles.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal - Find Your Dream Career</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Manpower Recruitment Agency</h1>
-      <nav>
-        <a href="#jobs">Jobs</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> JobPortal</h1>
+            <nav>
+                <a href="#jobs">Jobs</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contact">Contact</a>
+                <button id="themeToggle" aria-label="Toggle dark mode" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
 
-  <section class="hero">
-    <div class="container">
-      <h2>Empowering Careers, Elevating Businesses</h2>
-      <p>
-        We connect top talent with leading organizations. Whether you’re looking for your next job or searching for the perfect hire, our expertise makes the difference.
-      </p>
-      <a href="#jobs" class="cta-btn">Find Jobs</a>
-    </div>
-  </section>
+    <section class="hero">
+        <div class="container">
+            <h2>Find Your Perfect Job Today</h2>
+            <p>Connect with top employers and discover opportunities that match your skills and aspirations</p>
+            <a href="#jobs" class="cta-btn">Browse Jobs <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </section>
 
-  <main>
-    <section id="jobs" class="container">
-      <h2>Current Job Openings</h2>
-      <div class="job-list" id="jobList"></div>
+    <section id="jobs" aria-labelledby="jobs-heading">
+        <div class="container">
+            <h2 id="jobs-heading">Current Job Openings</h2>
+            
+            <!-- Search and Filter Section -->
+            <div class="filters">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="search" id="jobSearch" placeholder="Search jobs by title, skill, or keyword..." 
+                           aria-label="Search jobs by title or skill">
+                </div>
+                <div class="filter-group">
+                    <select id="locationFilter" aria-label="Filter by location">
+                        <option value="">All Locations</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Bangalore">Bangalore</option>
+                    </select>
+                    <select id="experienceFilter" aria-label="Filter by experience">
+                        <option value="">All Experience Levels</option>
+                        <option value="fresher">Fresher</option>
+                        <option value="1-3">1-3 Years</option>
+                        <option value="3+">3+ Years</option>
+                    </select>
+                    <button id="clearFilters" class="clear-btn">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jobs Results Counter -->
+            <div id="resultsCount" class="results-count"></div>
+            
+            <!-- Job Listings -->
+            <div id="jobList" class="job-list" role="list"></div>
+            
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No jobs found</h3>
+                <p>Try adjusting your search criteria or browse all available positions.</p>
+            </div>
+        </div>
     </section>
 
     <!-- Application Modal -->
-    <div class="modal" id="applyModal">
-      <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h3>Apply for <span id="jobInModal"></span></h3>
-        <form id="applyForm" enctype="multipart/form-data">
-          <input type="hidden" id="jobTitle" name="jobTitle"/>
-          <label>
-            Name:
-            <input type="text" id="name" required maxlength="50" placeholder="Full Name"/>
-          </label>
-          <label>
-            Email:
-            <input type="email" id="email" required placeholder="Your Email"/>
-          </label>
-          <label>
-            Phone:
-            <input type="tel" id="phone" required maxlength="15" placeholder="Phone Number"/>
-          </label>
-          <label>
-            Cover Letter:
-            <textarea id="cover" rows="3" maxlength="500" placeholder="Why are you a good fit?"></textarea>
-          </label>
-          <label>
-            Resume (PDF):
-            <input type="file" id="resume" accept=".pdf" />
-          </label>
-          <button type="submit">Submit Application</button>
-        </form>
-        <div id="confirmation" class="confirmation"></div>
-      </div>
+    <div id="applicationModal" class="modal" aria-labelledby="modal-title" aria-hidden="true" role="dialog">
+        <div class="modal-content">
+            <button class="close" aria-label="Close modal">&times;</button>
+            <h3 id="modalJobTitle">Apply for Position</h3>
+            <form id="applyForm" novalidate>
+                <div class="form-group">
+                    <label for="applicantName">Full Name *</label>
+                    <input id="applicantName" type="text" required aria-describedby="name-error">
+                    <span class="error-message" id="name-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantEmail">Email Address *</label>
+                    <input id="applicantEmail" type="email" required aria-describedby="email-error">
+                    <span class="error-message" id="email-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantPhone">Phone Number *</label>
+                    <input id="applicantPhone" type="tel" required aria-describedby="phone-error">
+                    <span class="error-message" id="phone-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantExperience">Years of Experience</label>
+                    <select id="applicantExperience">
+                        <option value="">Select experience</option>
+                        <option value="0">Fresher</option>
+                        <option value="1-2">1-2 Years</option>
+                        <option value="3-5">3-5 Years</option>
+                        <option value="5+">5+ Years</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantResume">Resume (PDF only) *</label>
+                    <input id="applicantResume" type="file" accept=".pdf" required aria-describedby="resume-error">
+                    <span class="error-message" id="resume-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coverLetter">Cover Letter</label>
+                    <textarea id="coverLetter" placeholder="Tell us why you're the perfect fit for this role..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Submit Application</span>
+                    <div class="spinner" style="display: none;"></div>
+                </button>
+                
+                <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+            </form>
+        </div>
     </div>
 
-    <section id="testimonials" class="container">
-      <h2>Testimonials</h2>
-      <div class="testimonials-list">
-        <div class="testimonial">
-          <p>"I found my dream job within two weeks! The experience was smooth and the staff supported me throughout the process."</p>
-          <span>- Priya Sharma, Marketing Executive</span>
+    <section id="testimonials" aria-labelledby="testimonials-heading">
+        <div class="container">
+            <h2 id="testimonials-heading">What Our Users Say</h2>
+            <div class="testimonials-list">
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"I found my dream job within two weeks! The experience was smooth and the staff supported me throughout the process."</p>
+                    <div class="author">
+                        <strong>Priya Sharma</strong>
+                        <span>Marketing Executive</span>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Their screening process ensures we always get the best candidates for our company. Highly recommended for businesses!"</p>
+                    <div class="author">
+                        <strong>Rohit Singh</strong>
+                        <span>HR Manager, TechNova</span>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Quick response, excellent jobs, and professional attention. Best agency in the field!"</p>
+                    <div class="author">
+                        <strong>Anil Patel</strong>
+                        <span>Site Supervisor</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="testimonial">
-          <p>"Their screening process ensures we always get the best candidates for our company. Highly recommended for businesses!"</p>
-          <span>- Rohit Singh, HR Manager, TechNova</span>
-        </div>
-        <div class="testimonial">
-          <p>"Quick response, excellent jobs, and professional attention. Best agency in the field!"</p>
-          <span>- Anil Patel, Site Supervisor</span>
-        </div>
-      </div>
     </section>
 
-    <section id="faq" class="container">
-      <h2>Frequently Asked Questions</h2>
-      <div class="faq-list">
-        <div class="faq-item">
-          <strong>How do I apply for a job?</strong>
-          <p>Browse available jobs and click "Apply" to fill out the application form for the chosen position.</p>
+    <section id="faq" aria-labelledby="faq-heading">
+        <div class="container">
+            <h2 id="faq-heading">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <strong>How do I apply for a job?</strong>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Browse available jobs and click "Apply" to fill out the application form for the chosen position. You can also use our search and filter options to find roles that match your criteria.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <strong>Can I submit my resume for future openings?</strong>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, use the "Contact" section or email us directly with your resume and desired position type. We'll keep your information on file for relevant future opportunities.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <strong>Is there any fee for candidates?</strong>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, our service is completely free for job seekers. We never charge candidates for job applications, interviews, or placements.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <strong>How can I get in touch for business hiring?</strong>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Employers can contact us via email or phone in the "Contact" section for personalized support. We offer customized hiring solutions for businesses of all sizes.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="faq-item">
-          <strong>Can I submit my resume for future openings?</strong>
-          <p>Yes, use the “Contact” section or email us directly with your resume and desired position type.</p>
-        </div>
-        <div class="faq-item">
-          <strong>Is there any fee for candidates?</strong>
-          <p>No, our service is always free for job seekers.</p>
-        </div>
-        <div class="faq-item">
-          <strong>How can I get in touch for business hiring?</strong>
-          <p>Employers can contact us via email or phone in the “Contact” section for personalized support.</p>
-        </div>
-      </div>
     </section>
 
-  </main>
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-contact">
+                    <h3><i class="fas fa-envelope"></i> Contact Us</h3>
+                    <p>Email: info@jobportal.com</p>
+                    <p>Phone: +91 98765 43210</p>
+                    <p>Address: Mumbai, Maharashtra, India</p>
+                </div>
+                
+                <div class="footer-social">
+                    <h3><i class="fas fa-share-alt"></i> Follow Us</h3>
+                    <div class="social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 JobPortal. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
 
-  <footer id="contact">
-    <div class="container">
-      <div class="footer-contact">
-        <h3>Contact Us</h3>
-        <p>Email: info@manpoweragency.com</p>
-        <p>Phone: +91-1234567890</p>
-        <p>Office: 123 Business Park, Mumbai, India</p>
-      </div>
-      <div class="footer-social">
-        <h3>Follow Us</h3>
-        <span class="social">
-          <a href="#" title="LinkedIn">LinkedIn</a> |
-          <a href="#" title="Twitter">Twitter</a> |
-          <a href="#" title="Facebook">Facebook</a>
-        </span>
-      </div>
-      <p class="copyright">&copy; 2025 Manpower Recruitment Agency. All rights reserved.</p>
-    </div>
-  </footer>
-  <script src="script.js"></script>
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top" style="display: none;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
 </body>
 </html>
